@@ -1,0 +1,48 @@
+package com.ncueto.weatherapp.presentation.ui.theme
+
+import android.app.Activity
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+
+private val ColorScheme = lightColorScheme(
+    primary = BackgroundBlue,
+    onPrimary = White,
+    primaryContainer = BackgroundBlue,
+    onPrimaryContainer = White,
+    secondary = BackgroundBlue,
+    onSecondary = White,
+    background = BackgroundBlue,
+    onBackground = TextWhite,
+    surface = CardBackground,
+    onSurface = TextWhite,
+    surfaceVariant = WhiteTransparent20,
+    onSurfaceVariant = TextWhiteSecondary,
+    error = ErrorRed,
+    onError = White
+)
+
+@Composable
+fun WeatherAppTheme(
+    content: @Composable () -> Unit
+) {
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = BackgroundBlue.toArgb()
+            window.navigationBarColor = BackgroundBlue.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = ColorScheme,
+        typography = Typography,
+        content = content
+    )
+}
