@@ -16,6 +16,14 @@ class GetWeatherUseCase(
     }
 }
 
+class GetWeatherByCityUseCase(
+    private val weatherRepository: WeatherRepository
+) {
+    suspend operator fun invoke(cityName: String): Result<Weather> {
+        return weatherRepository.getWeatherByCity(cityName)
+    }
+}
+
 class GetCurrentLocationUseCase(
     private val locationRepository: LocationRepository
 ) {

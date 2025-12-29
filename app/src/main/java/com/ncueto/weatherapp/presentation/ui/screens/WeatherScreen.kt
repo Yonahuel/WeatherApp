@@ -10,7 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ncueto.weatherapp.domain.model.Weather
 import com.ncueto.weatherapp.presentation.ui.components.ErrorState
@@ -18,6 +23,7 @@ import com.ncueto.weatherapp.presentation.ui.components.LoadingState
 import com.ncueto.weatherapp.presentation.ui.components.LocationHeader
 import com.ncueto.weatherapp.presentation.ui.components.MainWeatherDisplay
 import com.ncueto.weatherapp.presentation.ui.components.PermissionRequestState
+import com.ncueto.weatherapp.presentation.ui.components.SearchCityDialog
 import com.ncueto.weatherapp.presentation.ui.components.SunriseSunsetCard
 import com.ncueto.weatherapp.presentation.ui.components.WeatherIndicatorsRow
 import com.ncueto.weatherapp.presentation.ui.components.WindCard
@@ -29,8 +35,14 @@ fun WeatherScreen(
     uiState: WeatherUiState,
     onRequestPermission: () -> Unit,
     onRetry: () -> Unit,
+    onSearchCity: (String) -> Unit,
+    onSettingsClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onLocationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showSearchDialog by remember { mutableStateOf(false) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -50,8 +62,23 @@ fun WeatherScreen(
                 )
             }
             uiState.isSuccess && uiState.weather != null -> {
-                WeatherContent(weather = uiState.weather)
+                WeatherContent(
+                    weather = uiState.weather,
+                    onSearchClick = { showSearchDialog = true },
+                    onSettingsClick = onSettingsClick,
+                    onShareClick = onShareClick,
+                    onLocationClick = onLocationClick
+                )
             }
+        }
+
+        if (showSearchDialog) {
+            SearchCityDialog(
+                onDismiss = { showSearchDialog = false },
+                onSearch = { cityName ->
+                    onSearchCity(cityName)
+                }
+            )
         }
     }
 }
@@ -59,6 +86,10 @@ fun WeatherScreen(
 @Composable
 private fun WeatherContent(
     weather: Weather,
+    onSearchClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onLocationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -68,7 +99,11 @@ private fun WeatherContent(
             .padding(top = 40.dp, bottom = 24.dp)
     ) {
         LocationHeader(
-            locationName = "${weather.locationName}, ${weather.country}"
+            locationName = "${weather.locationName}, ${weather.country}",
+            onSettingsClick = onSettingsClick,
+            onShareClick = onShareClick,
+            onSearchClick = onSearchClick,
+            onLocationClick = onLocationClick
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -102,7 +137,7 @@ private fun WeatherContent(
             windDegree = weather.windDegree
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         SunriseSunsetCard(
             sunrise = weather.sunrise,
@@ -110,4 +145,36 @@ private fun WeatherContent(
             timezone = weather.timezone
         )
     }
+}
+
+@Preview
+@Composable
+fun WeatherContentPreview() {
+    WeatherContent(
+        Weather(
+            locationName = "Buenos Aires",
+            country = "Argentina",
+            temperature = 20.0,
+            feelsLike = 18.5,
+            description = "Descripción del clima",
+            tempMin = 15.0,
+            tempMax = 25.0,
+            windSpeed = 5.0,
+            rain = 0.0,
+            timestamp = 1623456789,
+            timezone = -10800,
+            icon = "01d",
+            pressure = 1013,
+            clouds = 50,
+            humidity = 60,
+            sunrise = 1623478900,
+            sunset = 1623521300,
+            windDegree = 45,
+            windGust = 8.0
+        ),
+        {},
+        {},
+        {},
+        {}
+    )
 }

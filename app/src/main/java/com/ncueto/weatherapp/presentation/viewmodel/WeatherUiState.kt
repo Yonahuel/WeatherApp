@@ -19,4 +19,6 @@ sealed class WeatherEvent {
     data object PermissionGranted : WeatherEvent()
     data object PermissionDenied : WeatherEvent()
     data object OpenLocationSettings : WeatherEvent()
+    data object OpenSettings : WeatherEvent()
+    data object ShareWeather : WeatherEvent()
 }

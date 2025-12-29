@@ -11,6 +11,7 @@ sealed class AppException(override val message: String) : Exception(message) {
     data object LocationPermissionDenied : AppException("Permiso de ubicación denegado.")
     data object LocationDisabled : AppException("GPS deshabilitado. Actívalo para continuar.")
     data object LocationUnavailable : AppException("No se pudo obtener la ubicación.")
+    data object CityNotFound : AppException("Ciudad no encontrada. Verifica el nombre.")
     data class Unknown(override val message: String) : AppException(message)
 }
 
