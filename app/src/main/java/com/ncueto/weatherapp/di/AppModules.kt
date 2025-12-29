@@ -7,6 +7,7 @@ import com.ncueto.weatherapp.domain.repository.LocationRepositoryImpl
 import com.ncueto.weatherapp.domain.repository.WeatherRepository
 import com.ncueto.weatherapp.domain.repository.WeatherRepositoryImpl
 import com.ncueto.weatherapp.domain.usecase.GetCurrentLocationUseCase
+import com.ncueto.weatherapp.domain.usecase.GetWeatherByCityUseCase
 import com.ncueto.weatherapp.domain.usecase.GetWeatherUseCase
 import com.ncueto.weatherapp.domain.usecase.IsLocationEnabledUseCase
 import com.ncueto.weatherapp.presentation.viewmodel.WeatherViewModel
@@ -47,12 +48,20 @@ val repositoryModule = module {
 
 val useCaseModule = module {
     factory { GetWeatherUseCase(get()) }
+    factory { GetWeatherByCityUseCase(get()) }
     factory { GetCurrentLocationUseCase(get()) }
     factory { IsLocationEnabledUseCase(get()) }
 }
 
 val viewModelModule = module {
-    viewModel { WeatherViewModel(get(), get(), get()) }
+    viewModel {
+        WeatherViewModel(
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 }
 
 val appModules = listOf(

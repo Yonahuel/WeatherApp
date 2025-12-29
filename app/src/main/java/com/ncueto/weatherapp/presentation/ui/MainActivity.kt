@@ -4,22 +4,23 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
-import com.ncueto.weatherapp.presentation.ui.screens.WeatherScreen
+import androidx.navigation.compose.rememberNavController
+import com.ncueto.weatherapp.presentation.ui.navigation.WeatherNavHost
 import com.ncueto.weatherapp.presentation.ui.theme.WeatherAppTheme
 import com.ncueto.weatherapp.presentation.viewmodel.WeatherEvent
 import com.ncueto.weatherapp.presentation.viewmodel.WeatherViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     private val viewModel: WeatherViewModel by viewModel()
@@ -37,29 +38,29 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherAppTheme {
-                val uiState by viewModel.uiState.collectAsState()
+                val navController = rememberNavController()
 
                 LaunchedEffect(Unit) {
                     viewModel.events.collect { event ->
                         when (event) {
                             is WeatherEvent.RequestLocationPermission -> requestLocationPermission()
                             is WeatherEvent.OpenLocationSettings -> openLocationSettings()
+                            is WeatherEvent.OpenSettings -> {
+                                Toast.makeText(this@MainActivity, "Configuración", Toast.LENGTH_SHORT).show()
+                            }
+                            is WeatherEvent.ShareWeather -> {
+                                shareWeather()
+                            }
                             else -> {}
                         }
                     }
                 }
-
-                // Check permission on start
-                LaunchedEffect(Unit) {
-                    if (hasLocationPermission()) {
-                        viewModel.onPermissionResult(true)
-                    }
-                }
-
-                WeatherScreen(
-                    uiState = uiState,
+                WeatherNavHost(
+                    navController = navController,
+                    viewModel = viewModel,
                     onRequestPermission = { requestLocationPermission() },
-                    onRetry = { viewModel.refresh() },
+                    onShareWeather = { shareWeather() },
+                    hasLocationPermission = { hasLocationPermission() },
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -88,5 +89,24 @@ class MainActivity : ComponentActivity() {
 
     private fun openLocationSettings() {
         startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+    }
+
+    private fun shareWeather() {
+        val weather = viewModel.uiState.value.weather ?: return
+        val shareText = buildString {
+            append("🌤 Clima en ${weather.locationName}, ${weather.country}\n")
+            append("🌡 Temperatura: ${weather.temperature.roundToInt()}°C\n")
+            append("💨 Viento: ${(weather.windSpeed * 3.6).roundToInt()} km/h\n")
+            append("💧 Humedad: ${weather.humidity}%\n")
+            append("☁ Nubes: ${weather.clouds}%\n")
+            append("📊 Presión: ${weather.pressure} hPa")
+        }
+
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, shareText)
+            type = "text/plain"
+        }
+        startActivity(Intent.createChooser(sendIntent, "Compartir clima"))
     }
 }
