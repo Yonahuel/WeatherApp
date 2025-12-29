@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ncueto.weatherapp.R
 import com.ncueto.weatherapp.presentation.ui.theme.CloudsRed
 import com.ncueto.weatherapp.presentation.ui.theme.HumidityCyan
 import com.ncueto.weatherapp.presentation.ui.theme.PressureYellow
@@ -39,22 +41,22 @@ fun WeatherIndicatorsRow(
     ) {
         CircularIndicator(
             value = pressure.toString(),
-            unit = "hPa",
-            label = "Presión",
+            unit = stringResource(R.string.pressure_unit),
+            label = stringResource(R.string.pressure_indicator_text),
             progress = (pressure - 950f) / 100f,
             color = PressureYellow
         )
         CircularIndicator(
             value = "$clouds",
-            unit = "%",
-            label = "Nubes",
+            unit = stringResource(R.string.percentage_simbol),
+            label = stringResource(R.string.clouds_indicator_text),
             progress = clouds / 100f,
             color = CloudsRed
         )
         CircularIndicator(
             value = "$humidity",
-            unit = "%",
-            label = "Humedad",
+            unit = stringResource(R.string.percentage_simbol),
+            label = stringResource(R.string.humidity_indicator_text),
             progress = humidity / 100f,
             color = HumidityCyan
         )
@@ -78,7 +80,7 @@ private fun CircularIndicator(
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(70.dp)
         ) {
-            // Background arc - blanco sólido (sin transparencia)
+            // Background arc
             Canvas(modifier = Modifier.size(70.dp)) {
                 drawArc(
                     color = White,
@@ -88,7 +90,7 @@ private fun CircularIndicator(
                     style = Stroke(width = 6.dp.toPx(), cap = StrokeCap.Round)
                 )
             }
-            // Progress arc - color según indicador
+            // Progress arc
             Canvas(modifier = Modifier.size(70.dp)) {
                 drawArc(
                     color = color,
@@ -107,14 +109,14 @@ private fun CircularIndicator(
                 ) {
                     Text(
                         text = value,
-                        color = color,
+                        color = TextWhite,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                     if (unit.isNotEmpty()) {
                         Text(
                             text = unit,
-                            color = color,
+                            color = TextWhite,
                             fontSize = 8.sp,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.padding(bottom = 2.dp)
@@ -126,8 +128,8 @@ private fun CircularIndicator(
         Text(
             text = label,
             color = TextWhite,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 4.dp)
         )
     }

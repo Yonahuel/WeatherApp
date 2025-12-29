@@ -15,10 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncueto.weatherapp.R
@@ -54,7 +57,7 @@ fun MainWeatherDisplay(
         // Date and time
         Text(
             text = formatDateTime(timestamp, timezone),
-            color = TextWhiteSecondary,
+            color = TextWhite,
             fontSize = 14.sp
         )
 
@@ -66,7 +69,7 @@ fun MainWeatherDisplay(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left side - Wind and Rain (iconos de 24dp)
+            // Left side - Wind and Rain
             Column(
                 horizontalAlignment = Alignment.Start
             ) {
@@ -75,14 +78,14 @@ fun MainWeatherDisplay(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_wind),
+                        painter = painterResource(id = R.drawable.ic_wind_indicator),
                         contentDescription = null,
-                        tint = TextWhiteSecondary,
+                        tint = TextWhite,
                         modifier = Modifier.size(24.dp)
                     )
                     Text(
                         text = "${(windSpeed * 3.6).roundToInt()} km/h",
-                        color = TextWhiteSecondary,
+                        color = TextWhite,
                         fontSize = 14.sp
                     )
                 }
@@ -94,12 +97,12 @@ fun MainWeatherDisplay(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_rain),
                         contentDescription = null,
-                        tint = TextWhiteSecondary,
+                        tint = TextWhite,
                         modifier = Modifier.size(24.dp)
                     )
                     Text(
                         text = "${rain?.let { String.format("%.1f", it) } ?: "0"}mm",
-                        color = TextWhiteSecondary,
+                        color = TextWhite,
                         fontSize = 14.sp
                     )
                 }
@@ -118,10 +121,21 @@ fun MainWeatherDisplay(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontSize = 48.sp, fontWeight = FontWeight.Normal)) {
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 48.sp,
+                                fontWeight = FontWeight.Normal
+                            )
+                        ) {
                             append("${temperature.roundToInt()}")
                         }
-                        withStyle(style = SpanStyle(fontSize = 20.sp, fontWeight = FontWeight.Normal)) {
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 36.sp,
+                                fontWeight = FontWeight.Bold,
+                                baselineShift = BaselineShift.Superscript
+                            )
+                        ) {
                             append("º")
                         }
                     },
@@ -129,7 +143,7 @@ fun MainWeatherDisplay(
                 )
             }
 
-            // Right side - Min/Max temp (iconos de 24dp)
+            // Right side - Min/Max temp
             Column(
                 horizontalAlignment = Alignment.End
             ) {
@@ -139,13 +153,13 @@ fun MainWeatherDisplay(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_up),
-                        contentDescription = "Máxima",
-                        tint = TextWhiteSecondary,
+                        contentDescription = stringResource(R.string.maxima_icon_content_description),
+                        tint = TextWhite,
                         modifier = Modifier.size(24.dp)
                     )
                     Text(
                         text = "${tempMax.roundToInt()}º",
-                        color = TextWhiteSecondary,
+                        color = TextWhite,
                         fontSize = 14.sp
                     )
                 }
@@ -156,13 +170,13 @@ fun MainWeatherDisplay(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_down),
-                        contentDescription = "Mínima",
-                        tint = TextWhiteSecondary,
+                        contentDescription = stringResource(R.string.minima_icon_content_description),
+                        tint = TextWhite,
                         modifier = Modifier.size(24.dp)
                     )
                     Text(
                         text = "${tempMin.roundToInt()}º",
-                        color = TextWhiteSecondary,
+                        color = TextWhite,
                         fontSize = 14.sp
                     )
                 }
@@ -186,6 +200,23 @@ fun MainWeatherDisplay(
             fontWeight = FontWeight.SemiBold
         )
     }
+}
+
+@Preview
+@Composable
+fun MainWeatherDisplayPreview() {
+    MainWeatherDisplay(
+        temperature = 20.0,
+        feelsLike = 25.0,
+        description = "Descripción del clima",
+        tempMin = 15.0,
+        tempMax = 30.0,
+        windSpeed = 5.0,
+        rain = 0.0,
+        timestamp = 1623456789,
+        timezone = -10800,
+        icon = "ic_sunrise_cloud"
+    )
 }
 
 private fun formatDateTime(timestamp: Long, timezoneOffset: Int): String {

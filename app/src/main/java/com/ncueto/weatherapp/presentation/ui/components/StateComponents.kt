@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun LoadingState(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Obteniendo ubicación...",
+                text = stringResource(R.string.location_loader_text),
                 color = TextWhite,
                 fontSize = 16.sp
             )
@@ -79,7 +80,7 @@ fun ErrorState(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "¡Ups! Algo salió mal",
+                text = stringResource(R.string.error_message),
                 color = TextWhite,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -102,7 +103,7 @@ fun ErrorState(
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Text(
-                    text = "Reintentar",
+                    text = stringResource(R.string.retry_message),
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -132,7 +133,7 @@ fun PermissionRequestState(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Permiso de ubicación",
+                text = stringResource(R.string.permission_request_title),
                 color = TextWhite,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -140,7 +141,7 @@ fun PermissionRequestState(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Necesitamos acceso a tu ubicación para mostrarte el clima actual.",
+                text = stringResource(R.string.permission_request_text),
                 color = TextWhiteSecondary,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center
@@ -155,7 +156,7 @@ fun PermissionRequestState(
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Text(
-                    text = "Permitir ubicación",
+                    text = stringResource(R.string.permission_request_button_text),
                     fontWeight = FontWeight.Medium
                 )
             }

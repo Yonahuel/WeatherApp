@@ -20,7 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncueto.weatherapp.R
@@ -43,14 +45,14 @@ fun SunriseSunsetCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .border(1.dp, White, RoundedCornerShape(16.dp)),
-        shape = RoundedCornerShape(16.dp),
+            .border(1.dp, White, RoundedCornerShape(8.dp)),
+        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = BackgroundBlue)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(8.dp)
         ) {
-            // Header - icono blanco más grande, texto más grande
+            // Header
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -62,16 +64,16 @@ fun SunriseSunsetCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Puesta de sol",
+                    text = stringResource(R.string.sunset_card_title),
                     color = TextWhite,
-                    fontSize = 18.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(2.dp))
 
-            // Sunrise/Sunset icons with labels on top
+            // Sunrise/Sunset
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -81,7 +83,7 @@ fun SunriseSunsetCard(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Anochece ${formatTime(sunset, timezone)}",
+                        text = stringResource(R.string.sunset_text, formatTime(sunset, timezone)),
                         color = TextWhite,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
@@ -89,7 +91,7 @@ fun SunriseSunsetCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Icon(
                         painter = painterResource(id = R.drawable.ic_sunset_landscape),
-                        contentDescription = "Atardecer",
+                        contentDescription = stringResource(R.string.sunset_content_description),
                         tint = Color.Unspecified,
                         modifier = Modifier.size(48.dp)
                     )
@@ -100,15 +102,15 @@ fun SunriseSunsetCard(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Amanece ${formatTime(sunrise, timezone)}",
+                        text = stringResource(R.string.sunrise_text, formatTime(sunrise, timezone)),
                         color = TextWhite,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_sunrise_cloud),
-                        contentDescription = "Amanecer",
+                        painter = painterResource(id = R.drawable.ic_sunrise_horizon),
+                        contentDescription = stringResource(R.string.sunrise_content_description),
                         tint = Color.Unspecified,
                         modifier = Modifier.size(48.dp)
                     )
@@ -117,6 +119,17 @@ fun SunriseSunsetCard(
         }
     }
 }
+
+@Preview
+@Composable
+fun SunriseSunsetCardPreview() {
+    SunriseSunsetCard(
+        sunrise = 8,
+        sunset = 20,
+        timezone = -3000
+    )
+}
+
 
 private fun formatTime(timestamp: Long, timezoneOffset: Int): String {
     val date = Date(timestamp * 1000)
