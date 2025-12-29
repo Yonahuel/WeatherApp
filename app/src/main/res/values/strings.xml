@@ -1,3 +1,40 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <!-- LocationHeader -->
+    <string name="settings_icon_content_description">Configuración</string>
+    <string name="search_icon_content_description">Buscar ciudad</string>
+    <string name="location_icon_content_description">Usar mi ubicación</string>
+    <string name="share_icon_content_description">Compartir</string>
+    <!-- MainWeatherDisplay -->
+    <string name="maxima_icon_content_description">Máxima</string>
+    <string name="minima_icon_content_description">Mínima</string>
+    <!-- SearchCityDialog -->
+    <string name="search_dialog_title">Buscar ciudad</string>
+    <string name="search_input_label">Nombre de la ciudad</string>
+    <string name="search_input_placeholder">Ej: Madrid, Buenos Aires</string>
+    <string name="search_button_text">Buscar</string>
+    <string name="cancel_button_text">Cancelar</string>
+    <!-- StateComponents -->
+    <string name="location_loader_text">Obteniendo ubicación...</string>
+    <string name="error_message">¡Ups! Algo salió mal</string>
+    <string name="retry_message">Reintentar</string>
+    <string name="permission_request_title">Permiso de ubicación</string>
+    <string name="permission_request_text">Necesitamos acceso a tu ubicación para mostrarte el clima actual.</string>
+    <string name="permission_request_button_text">Permitir ubicación</string>
+    <!-- SunriseSunsetCard -->
+    <string name="sunset_card_title">Puesta de sol</string>
+    <string name="sunset_text">Anochece %1$s</string>
+    <string name="sunset_content_description">Atardecer</string>
+    <string name="sunrise_text">Amanece %1$s</string>
+    <string name="sunrise_content_description">Amanecer</string>
+    <!-- WeatherIndicators -->
+    <string name="pressure_indicator_text">Presión</string>
+    <string name="pressure_unit">hPa</string>
+    <string name="clouds_indicator_text">Nubes</string>
+    <string name="percentage_simbol">%</string>
+    <string name="humidity_indicator_text">Humedad</string>
+    <!-- WindCard -->
+    <string name="wind_card_title">Viento</string>
+    <string name="kilometers_unit">km/h</string>
+    <string name="rachas_text">Rachas</string>
 </resources>

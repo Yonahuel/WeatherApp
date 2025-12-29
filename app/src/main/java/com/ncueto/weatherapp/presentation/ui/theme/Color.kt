@@ -25,7 +25,3 @@ val ErrorRed = Color(0xFFE53935)
 val PressureYellow = Color(0xFFFFEB3B)
 val CloudsRed = Color(0xFFE57373)
 val HumidityCyan = Color(0xFF4DD0E1)
-
-// Sun colors
-val SunYellow = Color(0xFFFFEB3B)
-val SunOrange = Color(0xFFFF9800)
