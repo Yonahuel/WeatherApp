@@ -30,4 +30,21 @@ class WeatherRepositoryImpl(
             }
         }
     }
+
+    override suspend fun getWeatherByCity(cityName: String): Result<Weather> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = apiService.getWeatherByCity(cityName)
+                Result.Success(response.toDomain())
+            } catch (e: UnknownHostException) {
+                Result.Error(AppException.NetworkError)
+            } catch (e: ClientRequestException) {
+                Result.Error(AppException.CityNotFound)
+            } catch (e: ServerResponseException) {
+                Result.Error(AppException.ServerError)
+            } catch (e: Exception) {
+                Result.Error(AppException.Unknown(e.message ?: "Error desconocido"))
+            }
+        }
+    }
 }
